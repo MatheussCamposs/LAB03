@@ -1,9 +1,17 @@
 class Aluno {
-    constructor(nome, idade, curso, nota) {
+    constructor(nome, idade, curso, notaFinal) {
         this.nome = nome;
         this.idade = idade;
         this.curso = curso;
-        this.nota = nota;
+        this.notaFinal = notaFinal;
+    }
+
+    isAprovado() {
+        return this.notaFinal >= 7;
+    }
+
+    toString() {
+        return `Nome: ${this.nome}, Idade: ${this.idade}, Curso: ${this.curso}, Nota Final: ${this.notaFinal.toFixed(1)} (${this.isAprovado() ? "Aprovado" : "Reprovado"})`;
     }
 }
 
@@ -22,18 +30,19 @@ class AlunoController {
     salvar(e) {
         e.preventDefault();
 
-        let nome = document.getElementById('nome').value.trim();
-        let idade = document.getElementById('idade').value.trim();
-        let cursoRadio = document.querySelector('input[name="curso"]:checked');
-        let nota = parseFloat(document.getElementById("nota").value);
-        let curso = cursoRadio.value;
+        const nome = document.getElementById('nome').value.trim();
+        const idade = document.getElementById('idade').value.trim();
+        const cursoRadio = document.querySelector('input[name="curso"]:checked');
+        const nota = parseFloat(document.getElementById("nota").value);
+
+        const curso = cursoRadio.value;
         const aluno = new Aluno(nome, idade, curso, nota);
 
         if (this.editando) {
             this.alunos.splice(this.indexEditando, 0, aluno);
             this.editando = false;
             this.indexEditando = null;
-            document.getElementById('btsalvar').value = "Salvar"; 
+            document.getElementById('btsalvar').value = "Salvar";
         } else {
             this.alunos.push(aluno);
         }
@@ -47,15 +56,16 @@ class AlunoController {
         tabela.innerHTML = "";
 
         this.alunos.forEach((aluno, index) => {
-            let row = tabela.insertRow();
+            const row = tabela.insertRow();
 
             row.insertCell(0).innerText = index + 1;
             row.insertCell(1).innerText = aluno.nome;
             row.insertCell(2).innerText = aluno.idade;
             row.insertCell(3).innerText = aluno.curso;
-            row.insertCell(4).innerText = aluno.nota.toFixed(1);
+            row.insertCell(4).innerText = aluno.notaFinal.toFixed(1);
+            row.insertCell(5).innerText = aluno.isAprovado() ? "Aprovado" : "Reprovado";
 
-            const actionCell = row.insertCell(5);
+            const actionCell = row.insertCell(6);
 
             const btEditar = document.createElement("button");
             btEditar.innerText = "Editar";
@@ -80,7 +90,7 @@ class AlunoController {
         document.querySelectorAll('input[name="curso"]').forEach(el => {
             el.checked = el.value === aluno.curso;
         });
-        document.getElementById('nota').value = aluno.nota;
+        document.getElementById('nota').value = aluno.notaFinal;
 
         this.alunos.splice(index, 1);
         this.editando = true;
@@ -100,7 +110,7 @@ class AlunoController {
         document.querySelectorAll('input[name="curso"]').forEach(el => el.checked = false);
         document.getElementById('nota').value = '';
     }
-
 }
 
 new AlunoController();
+

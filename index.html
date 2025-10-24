@@ -1,58 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CADASTRO</title>
 </head>
 <body>
     <a href="/index.html">Home</a>
     <hr>
-    <h4>Formulario de Cadastro de Alunos</h4>
-    <form action="" method="post">
-        <label for="nome">Nome:</label> <br>
-        <input type="text" id="nome" name="nome" required> <br>
 
-        <br>
-        <label for="idade">Idade:</label> <br>
-        <input type="number" id="idade" name="idade" required> <br>
+    <h3>Formulario de Cadastro de Alunos</h3>
 
-        <br>
-        <input type="radio" id="cursojs" name ="curso" value="JavaScript" required> JavaScript
-        <input type="radio" id="cursopy" name ="curso" value="Python" required> Python 
-        <input type="radio" id="cursojv" name ="curso" value="Java" required> Java <br>
+    <form id="formCadastro">
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
 
-        <br>
-        <label for="nota">Nota:</label> <br>
-        <input type="number" id="nota" name="nota" min="0" max="10" step="0.1" required> <br>
+        <label for="idade">Idade:</label><br>
+        <input type="number" id="idade" name="idade" min="0" required><br><br>
 
-        <br>
+        <label>Curso:</label><br>
+        <input type="radio" id="cursojs" name="curso" value="JavaScript" required> JavaScript
+        <input type="radio" id="cursopy" name="curso" value="Python"> Python
+        <input type="radio" id="cursojv" name="curso" value="Java"> Java<br><br>
+
+        <label for="nota">Nota Final:</label><br>
+        <input type="number" id="nota" name="nota" min="0" max="10" step="0.1" required><br><br>
+
         <input id="btsalvar" type="submit" value="Salvar">
 
-        <hr>
-        <table border=".1" cellpadding="5" cellspacing="0">
-            <thead>
-                <tr>
-                    <th bgcolor="gray" width="150">ID</th>
-                    <th bgcolor="gray" width="150">Nome</th>
-                    <th bgcolor="gray" width="150">Idade</th>
-                    <th bgcolor="gray" width="150">Curso</th>
-                    <th bgcolor="gray" width="150">Nota</th>
-                    <th bgcolor="gray" width="150">Editar/Excluir</th>
-                </tr>
-            </thead>
-            <tbody id="tabela">
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </tbody>
-        </table>
     </form>
+
+    <hr>
+
+    <h3>Lista de Alunos</h3>
+
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th bgcolor="gray" width="150">ID</th>
+                <th bgcolor="gray" width="150">Nome</th>
+                <th bgcolor="gray" width="150">Idade</th>
+                <th bgcolor="gray" width="150">Curso</th>
+                <th bgcolor="gray" width="150">Nota</th>
+                <th bgcolor="gray" width="150">Situação</th>
+                <th bgcolor="gray" width="150">Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tabela"></tbody>
+    </table>
+
     <script src="/js/aluno.js"></script>
 </body>
 </html>
