@@ -25,13 +25,14 @@ class AlunoController {
 
     init() {
         document.getElementById('btsalvar').addEventListener("click", (e) => this.salvar(e));
+        document.getElementById('btrelatorio').addEventListener('click', () => this.gerarRelatorio());
     }
 
     salvar(e) {
         e.preventDefault();
 
-        const nome = document.getElementById('nome').value.trim();
-        const idade = document.getElementById('idade').value.trim();
+        const nome = document.getElementById('nome').value;
+        const idade = parseInt(document.getElementById('idade').value);
         const cursoRadio = document.querySelector('input[name="curso"]:checked');
         const nota = parseFloat(document.getElementById("nota").value);
 
@@ -39,7 +40,7 @@ class AlunoController {
         const aluno = new Aluno(nome, idade, curso, nota);
 
         if (this.editando) {
-            this.alunos.splice(this.indexEditando, 0, aluno);
+            this.alunos[this.indexEditando] = aluno;
             this.editando = false;
             this.indexEditando = null;
             document.getElementById('btsalvar').value = "Salvar";
@@ -113,6 +114,64 @@ class AlunoController {
         document.querySelectorAll('input[name="curso"]').forEach(el => el.checked = false);
         document.getElementById('nota').value = '';
     }
+
+    gerarRelatorio() {
+        const relatorioEl = document.getElementById('relatorio');
+        relatorioEl.innerHTML = '';
+        const aprovados = this.alunos.filter(aluno => aluno.isAprovado());
+        const aprovadosLista = document.createElement('ul');
+        aprovados.forEach(aluno => {
+            const li = document.createElement('li');
+            li.textContent = aluno.toString();
+            aprovadosLista.appendChild(li);
+        });
+        relatorioEl.appendChild(document.createTextNode('Alunos Aprovados:'));
+        relatorioEl.appendChild(aprovadosLista);
+
+        let mediaNotas = 0;
+        if(this.alunos.length > 0) {
+            mediaNotas = this.alunos.reduce((soma, aluno) => soma + aluno.notaFinal, 0);
+            mediaNotas /= this.alunos.length;
+        }
+        const mediaNotasP = document.createElement('p');
+        mediaNotasP.textContent = `Média das notas: ${mediaNotas.toFixed(2)}`;
+        relatorioEl.appendChild(mediaNotasP);
+
+        let mediaIdades = 0;
+        if(this.alunos.length > 0) {
+            mediaIdades = this.alunos.reduce((soma, aluno) => soma + aluno.idade, 0);
+            mediaIdades /= this.alunos.length;
+        }
+        const mediaIdadesP = document.createElement('p');
+        mediaIdadesP.textContent = `Média das idades: ${mediaIdades.toFixed(1)} anos`;
+        relatorioEl.appendChild(mediaIdadesP);
+        console.log(mediaIdades);
+
+        const nomesOrdenados = this.alunos.map(aluno => aluno.nome).sort();
+        const nomesLista = document.createElement('ul');
+        nomesOrdenados.forEach(nome => {
+            const li = document.createElement('li');
+            li.textContent = nome;
+            nomesLista.appendChild(li);
+        });
+        relatorioEl.appendChild(document.createTextNode('Nomes em ordem alfabética:'));
+        relatorioEl.appendChild(nomesLista);
+
+        const alunosPorCurso = {};
+        this.alunos.forEach(aluno => {
+            const curso = aluno.curso;
+            alunosPorCurso[curso] = (alunosPorCurso[curso] || 0) + 1;
+        });
+        const cursosLista = document.createElement('ul');
+        for (const curso in alunosPorCurso) {
+            const li = document.createElement('li');
+            li.textContent = `${curso}: ${alunosPorCurso[curso]} aluno(s)`;
+            cursosLista.appendChild(li);
+        }
+        relatorioEl.appendChild(document.createTextNode('Alunos por curso:'));
+        relatorioEl.appendChild(cursosLista);
+    };
+
 }
 
 new AlunoController();
