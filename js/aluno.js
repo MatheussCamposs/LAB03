@@ -43,8 +43,10 @@ class AlunoController {
             this.editando = false;
             this.indexEditando = null;
             document.getElementById('btsalvar').value = "Salvar";
+            console.log("Alteração feita com sucesso!");
         } else {
             this.alunos.push(aluno);
+            console.log("Aluno cadastrado com sucesso!");
         }
 
         this.atualizarTabela();
@@ -101,6 +103,7 @@ class AlunoController {
 
     excluir(index) {
         this.alunos.splice(index, 1);
+        console.log("Aluno excluído com sucesso!");
         this.atualizarTabela();
     }
 
